@@ -33,6 +33,7 @@ public class LoginServlet extends HttpServlet {
             req.getRequestDispatcher("/index.jsp").forward(req, resp);
         } else {
             resp.setContentType(Constans.CONTENT_TYPE);
+            resp.setCharacterEncoding(Constans.ENCODING);
             resp.getWriter()
                     .println("<h1 style=\"background-color:red;\">BLAD LOGOWANIA SPROBUJ PONOWNIE</h1>");
             req.getRequestDispatcher("/login.jsp").include(req, resp);

@@ -23,6 +23,7 @@ public class ProductFilter implements Filter {
         } else {
             LOGGER.warning("SOMEONE TRIED TO GET ACCESS TO SECRET PAGE");
             servletResponse.setContentType(Constans.CONTENT_TYPE);
+            servletResponse.setCharacterEncoding(Constans.ENCODING);
             PrintWriter writer = servletResponse.getWriter();
             writer.println("<h1 style=\"background-color:red;\">BRAK UPRAWNIEN</h1>");
             servletRequest.getRequestDispatcher("/index.jsp").include(servletRequest, servletResponse);

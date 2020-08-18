@@ -16,6 +16,7 @@ public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getSession().invalidate();
         resp.setContentType(Constans.CONTENT_TYPE);
+        resp.setCharacterEncoding(Constans.ENCODING);
         resp.getWriter().println("<h1 style=\"background-color:green;\">Wylogowano poprawnie</h1>");
         req.getRequestDispatcher("/index.jsp").include(req, resp);
     }
