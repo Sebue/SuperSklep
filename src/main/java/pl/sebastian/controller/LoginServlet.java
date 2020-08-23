@@ -29,9 +29,13 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
 
         if(isAdmin(req)){
-            setPrivilege(req);
+            setPrivilege(req, Privilege.ADMIN);
             req.getRequestDispatcher("/index.jsp").forward(req, resp);
-        } else {
+        } else if (isCustomer(req)){
+            req.getSession().setAttribute("nickname", "customer");
+            setPrivilege(req, Privilege.CUSTOMER);
+            req.getRequestDispatcher("/index.jsp").forward(req, resp);
+        }else {
             resp.setContentType(Constans.CONTENT_TYPE);
             resp.setCharacterEncoding(Constans.ENCODING);
             resp.getWriter()
@@ -40,9 +44,20 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-    private void setPrivilege(HttpServletRequest req) {
+    private boolean isCustomer(HttpServletRequest req) {
+        //polaczenie do bazy danych
+        Optional<String> nickname = Optional.ofNullable(req.getParameter(Constans.NICKNAME));
+        Optional<String> password = Optional.ofNullable(req.getParameter(Constans.PASSWORD));
+
+        Boolean correctNickname = nickname.map("customer"::equals).orElse(false);
+        Boolean correctPassword = password.map("123"::equals).orElse(false);
+
+        return correctNickname && correctPassword;
+    }
+
+    private void setPrivilege(HttpServletRequest req, Privilege privilege) {
         HttpSession session = req.getSession();
-        session.setAttribute(Constans.PRIVILEGE, Privilege.ADMIN);
+        session.setAttribute(Constans.PRIVILEGE, privilege);
     }
 
     private boolean isAdmin(HttpServletRequest req) {
